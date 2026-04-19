@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квест по географии: Великие географические открытия</title>
+<style>
+  :root {
+    --bg: #07131d;
+    --bg-soft: #102433;
+    --panel: rgba(10, 24, 35, 0.84);
+    --panel-strong: rgba(12, 30, 44, 0.95);
+    --line: rgba(255, 216, 149, 0.18);
+    --gold: #f2c572;
+    --gold-strong: #ffde9b;
+    --sand: #f7edd8;
+    --muted: #b7c5d1;
+    --sea: #5fc0d6;
+    --emerald: #64c18b;
+    --danger: #ff7c7c;
+    --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--sand);
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background:
+      radial-gradient(circle at top, rgba(95, 192, 214, 0.18), transparent 32%),
+      radial-gradient(circle at 20% 80%, rgba(242, 197, 114, 0.1), transparent 24%),
+      linear-gradient(180deg, #04101a 0%, #0a1d2d 56%, #102433 100%);
+    overflow-x: hidden;
+  }
+
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  body::before {
+    background-image:
+      radial-gradient(circle at 10% 16%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px),
+      radial-gradient(circle at 82% 14%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px),
+      radial-gradient(circle at 65% 30%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px),
+      radial-gradient(circle at 23% 64%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px),
+      radial-gradient(circle at 78% 72%, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px);
+    background-size: 100% 100%;
+    opacity: 0.8;
+  }
+
+  body::after {
+    background:
+      linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 48%, transparent 100%);
+    mix-blend-mode: screen;
+  }
+
+  .shell {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 26px 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-mark {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    font-size: 28px;
+    background: linear-gradient(135deg, rgba(242, 197, 114, 0.24), rgba(95, 192, 214, 0.15));
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .eyebrow {
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    color: rgba(247, 237, 216, 0.6);
+  }
+
+  .brand h1 {
+    margin: 0;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.05;
+  }
+
+  .scoreboard {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--sand);
+    font-size: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .pill strong {
+    color: var(--gold-strong);
+  }
+
+  .hero,
+  .panel {
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+  }
+
+  .hero {
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 1.25fr 0.95fr;
+    gap: 24px;
+    margin-bottom: 22px;
+  }
+
+  .hero-copy p {
+    margin: 0;
+    max-width: 640px;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .hero-actions {
+    margin-top: 22px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hero-card {
+    padding: 20px;
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, rgba(242, 197, 114, 0.08), rgba(95, 192, 214, 0.06)),
+      var(--panel-strong);
+    border: 1px solid rgba(242, 197, 114, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: "";
+    position: absolute;
+    inset: auto -40px -70px auto;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(242, 197, 114, 0.18), transparent 65%);
+  }
+
+  .hero-card h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+  }
+
+  .hero-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .hero-map {
+    margin-top: 18px;
+    min-height: 220px;
+    border-radius: 22px;
+    border: 1px solid rgba(95, 192, 214, 0.18);
+    background:
+      radial-gradient(circle at 22% 38%, rgba(242, 197, 114, 0.28), transparent 13%),
+      radial-gradient(circle at 67% 50%, rgba(100, 193, 139, 0.22), transparent 15%),
+      radial-gradient(circle at 78% 70%, rgba(95, 192, 214, 0.16), transparent 12%),
+      linear-gradient(180deg, rgba(13, 37, 54, 0.95), rgba(8, 22, 34, 0.95));
+    position: relative;
+  }
+
+  .route-line {
+    position: absolute;
+    border-top: 2px dashed rgba(255, 222, 155, 0.42);
+    transform-origin: left center;
+  }
+
+  .map-dot {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 6px rgba(242, 197, 114, 0.12);
+  }
+
+  .map-label {
+    position: absolute;
+    font-size: 12px;
+    color: var(--sand);
+    background: rgba(6, 16, 24, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    padding: 6px 10px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 22px;
+  }
+
+  .panel {
+    padding: 22px;
+  }
+
+  .sidebar h3,
+  .stage h3 {
+    margin: 0 0 12px;
+    font-size: 22px;
+  }
+
+  .sidebar p,
+  .stage p,
+  .feedback {
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .stage-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .stage-chip {
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .stage-chip.active {
+    border-color: rgba(242, 197, 114, 0.5);
+    background: rgba(242, 197, 114, 0.08);
+  }
+
+  .stage-chip.done {
+    border-color: rgba(100, 193, 139, 0.5);
+    background: rgba(100, 193, 139, 0.08);
+  }
+
+  .stage-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--gold-strong);
+    font-weight: 700;
+    flex: 0 0 34px;
+  }
+
+  .stage {
+    min-height: 640px;
+    position: relative;
+  }
+
+  .stage.hidden {
+    display: none;
+  }
+
+  .stage-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .stage-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    color: var(--sand);
+  }
+
+  .btn {
+    border: none;
+    border-radius: 16px;
+    padding: 14px 20px;
+    min-height: 48px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    touch-action: manipulation;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+  }
+
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-primary {
+    color: #102433;
+    background: linear-gradient(135deg, var(--gold), var(--gold-strong));
+  }
+
+  .btn-secondary {
+    color: var(--sand);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-ghost {
+    color: var(--sea);
+    background: rgba(95, 192, 214, 0.08);
+    border: 1px solid rgba(95, 192, 214, 0.2);
+  }
+
+  .intro-layout,
+  .timeline-layout,
+  .routes-layout {
+    display: grid;
+    gap: 18px;
+  }
+
+  .intro-layout {
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: stretch;
+  }
+
+  .brief,
+  .logbook,
+  .task-box,
+  .question-card,
+  .result-card {
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 20px;
+  }
+
+  .brief ul {
+    margin: 14px 0 0;
+    padding-left: 20px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .logbook {
+    background:
+      linear-gradient(180deg, rgba(242, 197, 114, 0.06), rgba(255, 255, 255, 0.02)),
+      rgba(255, 255, 255, 0.03);
+  }
+
+  .logbook-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .log-item {
+    padding: 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(6, 16, 24, 0.35);
+  }
+
+  .log-item strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--gold-strong);
+  }
+
+  .task-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .timeline-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cards-grid,
+  .dropzones-grid,
+  .facts-grid,
+  .quiz-options {
+    display: grid;
+    gap: 14px;
+  }
+
+  .cards-grid,
+  .dropzones-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-card,
+  .route-card,
+  .drop-slot,
+  .destination {
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 16px;
+    transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+  }
+
+  .timeline-card:hover,
+  .route-card:hover,
+  .destination:hover {
+    transform: translateY(-2px);
+  }
+
+  .timeline-card.selected,
+  .route-card.selected {
+    border-color: rgba(242, 197, 114, 0.58);
+    background: rgba(242, 197, 114, 0.1);
+  }
+
+  .timeline-card.used,
+  .route-card.used {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .timeline-card h4,
+  .route-card h4,
+  .destination h4,
+  .drop-slot h4 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+
+  .card-year {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(95, 192, 214, 0.1);
+    color: var(--sea);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .drop-slot.correct,
+  .destination.correct {
+    border-color: rgba(100, 193, 139, 0.65);
+    background: rgba(100, 193, 139, 0.1);
+  }
+
+  .drop-slot.wrong,
+  .destination.wrong {
+    border-color: rgba(255, 124, 124, 0.6);
+    background: rgba(255, 124, 124, 0.08);
+  }
+
+  .placed-answer {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--gold-strong);
+    font-weight: 700;
+  }
+
+  .routes-layout {
+    grid-template-columns: 0.95fr 1.05fr;
+  }
+
+  .world-board {
+    min-height: 380px;
+    border-radius: 28px;
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 17% 45%, rgba(100, 193, 139, 0.18), transparent 12%),
+      radial-gradient(circle at 28% 60%, rgba(242, 197, 114, 0.16), transparent 14%),
+      radial-gradient(circle at 63% 42%, rgba(100, 193, 139, 0.16), transparent 15%),
+      radial-gradient(circle at 83% 66%, rgba(242, 197, 114, 0.14), transparent 13%),
+      linear-gradient(180deg, rgba(11, 38, 55, 0.96), rgba(8, 24, 36, 0.95));
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sea-label,
+  .land-label {
+    position: absolute;
+    font-size: 13px;
+    color: rgba(247, 237, 216, 0.8);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(6, 16, 24, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .path {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 222, 155, 0.25), rgba(255, 222, 155, 0.75));
+    transform-origin: left center;
+  }
+
+  .question-card {
+    max-width: 820px;
+  }
+
+  .quiz-progress {
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    margin: 16px 0 22px;
+  }
+
+  .quiz-progress > span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--sea), var(--gold));
+    transition: width 0.25s ease;
+  }
+
+  .question-text {
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.35;
+    margin: 8px 0 20px;
+  }
+
+  .quiz-options {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .option {
+    text-align: left;
+    padding: 16px 18px;
+    min-height: 64px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--sand);
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    touch-action: manipulation;
+  }
+
+  .option:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: rgba(242, 197, 114, 0.5);
+    background: rgba(242, 197, 114, 0.08);
+  }
+
+  .option.correct {
+    border-color: rgba(100, 193, 139, 0.65);
+    background: rgba(100, 193, 139, 0.12);
+  }
+
+  .option.wrong {
+    border-color: rgba(255, 124, 124, 0.65);
+    background: rgba(255, 124, 124, 0.12);
+  }
+
+  .fact-note {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 20px;
+    background: rgba(95, 192, 214, 0.08);
+    border: 1px solid rgba(95, 192, 214, 0.22);
+    color: var(--muted);
+    display: none;
+  }
+
+  .fact-note.show {
+    display: block;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .result-stat {
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .result-stat strong {
+    display: block;
+    font-size: 30px;
+    color: var(--gold-strong);
+    margin-bottom: 6px;
+  }
+
+  .feedback {
+    min-height: 26px;
+    margin-top: 12px;
+  }
+
+  .feedback.good {
+    color: var(--emerald);
+  }
+
+  .feedback.bad {
+    color: var(--danger);
+  }
+
+  .footer-actions {
+    margin-top: 22px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 980px) {
+    .hero,
+    .grid,
+    .intro-layout,
+    .timeline-layout,
+    .routes-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .shell {
+      width: min(100% - 18px, 1180px);
+      padding-top: 16px;
+    }
+
+    .topbar,
+    .brand,
+    .scoreboard,
+    .stage-head,
+    .task-row,
+    .footer-actions,
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .brand {
+      gap: 10px;
+    }
+
+    .brand h1 {
+      font-size: clamp(24px, 8vw, 34px);
+    }
+
+    .scoreboard {
+      width: 100%;
+    }
+
+    .pill {
+      width: 100%;
+      text-align: center;
+      border-radius: 18px;
+    }
+
+    .hero,
+    .panel {
+      padding: 18px;
+      border-radius: 22px;
+    }
+
+    .quiz-options,
+    .result-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-copy p,
+    .sidebar p,
+    .stage p,
+    .feedback {
+      font-size: 15px;
+    }
+
+    .hero-map,
+    .world-board {
+      min-height: 260px;
+    }
+
+    .map-label,
+    .sea-label,
+    .land-label {
+      font-size: 11px;
+      padding: 5px 8px;
+    }
+
+    .stage-chip,
+    .timeline-card,
+    .route-card,
+    .drop-slot,
+    .destination,
+    .question-card,
+    .brief,
+    .logbook,
+    .task-box,
+    .result-card,
+    .result-stat {
+      border-radius: 18px;
+    }
+
+    .timeline-card,
+    .route-card,
+    .drop-slot,
+    .destination,
+    .option {
+      padding: 14px;
+    }
+
+    .btn {
+      width: 100%;
+    }
+
+    .question-text {
+      font-size: clamp(20px, 6vw, 26px);
+    }
+
+    .stage {
+      min-height: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .shell {
+      width: calc(100% - 12px);
+      padding-top: 12px;
+      padding-bottom: 24px;
+    }
+
+    .hero,
+    .panel {
+      padding: 14px;
+      border-radius: 18px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      font-size: 24px;
+      border-radius: 14px;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+    }
+
+    .stage-meta {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    .tag {
+      text-align: center;
+    }
+
+    .hero-map,
+    .world-board {
+      min-height: 220px;
+      border-radius: 18px;
+    }
+
+    .map-dot {
+      width: 10px;
+      height: 10px;
+      box-shadow: 0 0 0 4px rgba(242, 197, 114, 0.12);
+    }
+
+    .route-line,
+    .path {
+      opacity: 0.75;
+    }
+
+    .result-stat strong {
+      font-size: 26px;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">🧭</div>
+        <div>
+          <p class="eyebrow">Онлайн игра по географии</p>
+          <h1>Великие географические открытия</h1>
+        </div>
+      </div>
+      <div class="scoreboard">
+        <div class="pill">Этап: <strong id="stageLabel">Подготовка</strong></div>
+        <div class="pill">Очки: <strong id="scoreValue">0</strong></div>
+        <div class="pill">Правильно: <strong id="correctValue">0</strong></div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">История + карта + викторина</p>
+        <h2 style="margin:0 0 14px;font-size:clamp(30px,4vw,52px);line-height:1.05;">Стань капитаном экспедиции и пройди квест по эпохе открытий</h2>
+        <p>
+          Тебе предстоит собрать хронологию путешествий, сопоставить мореплавателей с их маршрутами и пройти финальную викторину.
+          Это не просто тест, а маленькое приключение в духе старых атласов и морских дневников.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="startBtn">Начать экспедицию</button>
+          <button class="btn btn-secondary" id="restartBtnTop">Сбросить прогресс</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h2>Маршрут экспедиции</h2>
+        <p>3 этапа, 1000 возможных очков, исторические факты после каждого задания и красивый итоговый ранг в конце прохождения.</p>
+        <div class="hero-map">
+          <div class="map-dot" style="left:14%;top:33%;"></div>
+          <div class="map-dot" style="left:47%;top:49%;"></div>
+          <div class="map-dot" style="left:76%;top:64%;"></div>
+          <div class="route-line" style="left:16%;top:36%;width:165px;transform:rotate(18deg);"></div>
+          <div class="route-line" style="left:50%;top:52%;width:140px;transform:rotate(10deg);"></div>
+          <div class="map-label" style="left:10%;top:20%;">Лиссабон</div>
+          <div class="map-label" style="left:43%;top:58%;">Индия</div>
+          <div class="map-label" style="left:70%;top:74%;">Тихий океан</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <aside class="panel sidebar">
+        <h3>Путь квеста</h3>
+        <p>Каждый этап открывается по порядку. За точные ответы начисляются очки, а ошибки не ломают игру, а просто снижают результат.</p>
+        <div class="stage-list">
+          <div class="stage-chip active" id="chip-0">
+            <div class="stage-num">1</div>
+            <div>
+              <strong>Дневник капитана</strong>
+              <div>Вводный бриф и старт миссии</div>
+            </div>
+          </div>
+          <div class="stage-chip" id="chip-1">
+            <div class="stage-num">2</div>
+            <div>
+              <strong>Лента времени</strong>
+              <div>Расположи путешествия по хронологии</div>
+            </div>
+          </div>
+          <div class="stage-chip" id="chip-2">
+            <div class="stage-num">3</div>
+            <div>
+              <strong>Карта маршрутов</strong>
+              <div>Свяжи мореплавателей с их открытиями</div>
+            </div>
+          </div>
+          <div class="stage-chip" id="chip-3">
+            <div class="stage-num">4</div>
+            <div>
+              <strong>Финальная викторина</strong>
+              <div>Закрепи знания по теме</div>
+            </div>
+          </div>
+          <div class="stage-chip" id="chip-4">
+            <div class="stage-num">5</div>
+            <div>
+              <strong>Итог экспедиции</strong>
+              <div>Ранг, результат и вывод</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="panel">
+        <section class="stage" id="stage-0">
+          <div class="stage-head">
+            <div>
+              <p class="eyebrow">Этап 1</p>
+              <h3>Дневник капитана</h3>
+              <p>Ты отправляешься в эпоху Колумба, да Гамы и Магеллана. В этом квесте нужно не просто угадывать ответы, а понимать, как менялась карта мира.</p>
+            </div>
+            <div class="stage-meta">
+              <span class="tag">Формат: квест</span>
+              <span class="tag">Тема: географические открытия</span>
+              <span class="tag">Уровень: школьный проект</span>
+            </div>
+          </div>
+
+          <div class="intro-layout">
+            <div class="brief">
+              <h3 style="margin-top:0;">Твоя миссия</h3>
+              <p>За одно прохождение нужно выполнить три задания и набрать как можно больше очков.</p>
+              <ul>
+                <li>Сначала восстанови порядок великих экспедиций по датам.</li>
+                <li>Потом соотнеси мореплавателей с их главными маршрутами.</li>
+                <li>В конце ответь на вопросы викторины и получи итоговый ранг исследователя.</li>
+              </ul>
+              <div class="footer-actions">
+                <button class="btn btn-primary" id="toTimelineBtn">Перейти к заданию</button>
+              </div>
+            </div>
+
+            <div class="logbook">
+              <h3 style="margin-top:0;">Подсказка перед стартом</h3>
+              <p>Запомни три опорные точки эпохи открытий:</p>
+              <div class="logbook-grid">
+                <div class="log-item">
+                  <strong>1492</strong>
+                  Колумб достигает берегов Америки.
+                </div>
+                <div class="log-item">
+                  <strong>1498</strong>
+                  Васко да Гама открывает морской путь в Индию.
+                </div>
+                <div class="log-item">
+                  <strong>1519–1522</strong>
+                  Экспедиция Магеллана совершает первое кругосветное плавание.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="stage hidden" id="stage-1">
+          <div class="stage-head">
+            <div>
+              <p class="eyebrow">Этап 2</p>
+              <h3>Лента времени</h3>
+              <p>Нажми на карточку путешествия, затем выбери нужную позицию в хронологической шкале: от самого раннего события к более позднему.</p>
+            </div>
+            <div class="stage-meta">
+              <span class="tag">5 событий</span>
+              <span class="tag">Максимум: 300 очков</span>
+            </div>
+          </div>
+
+          <div class="task-row">
+            <button class="btn btn-ghost" id="shuffleTimelineBtn">Перемешать карточки</button>
+            <div class="tag" id="timelineSelectedLabel">Выбранная карточка: нет</div>
+          </div>
+
+          <div class="timeline-layout">
+            <div class="task-box">
+              <h3 style="margin-top:0;">Карточки экспедиций</h3>
+              <div class="cards-grid" id="timelineCards"></div>
+            </div>
+            <div class="task-box">
+              <h3 style="margin-top:0;">Шкала времени</h3>
+              <div class="dropzones-grid" id="timelineSlots"></div>
+            </div>
+          </div>
+
+          <div class="feedback" id="timelineFeedback"></div>
+          <div class="footer-actions">
+            <button class="btn btn-primary" id="toRoutesBtn" disabled>Открыть карту маршрутов</button>
+          </div>
+        </section>
+
+        <section class="stage hidden" id="stage-2">
+          <div class="stage-head">
+            <div>
+              <p class="eyebrow">Этап 3</p>
+              <h3>Карта маршрутов</h3>
+              <p>Выбери мореплавателя слева, затем нажми на правильную зону на карте справа. Задание проверяет, кто и какой путь открыл.</p>
+            </div>
+            <div class="stage-meta">
+              <span class="tag">4 сопоставления</span>
+              <span class="tag">Максимум: 300 очков</span>
+            </div>
+          </div>
+
+          <div class="routes-layout">
+            <div class="task-box">
+              <h3 style="margin-top:0;">Мореплаватели</h3>
+              <div class="cards-grid" id="routeCards"></div>
+              <div class="feedback" id="routesFeedback"></div>
+            </div>
+            <div class="task-box">
+              <h3 style="margin-top:0;">Карта открытий</h3>
+              <div class="world-board">
+                <div class="sea-label" style="left:6%;top:42%;">Атлантика</div>
+                <div class="sea-label" style="left:57%;top:64%;">Индийский океан</div>
+                <div class="sea-label" style="left:74%;top:26%;">Тихий океан</div>
+                <div class="land-label" style="left:16%;top:18%;">Европа</div>
+                <div class="land-label" style="left:23%;top:66%;">Южная Америка</div>
+                <div class="land-label" style="left:57%;top:32%;">Африка</div>
+                <div class="land-label" style="left:80%;top:72%;">Азия</div>
+                <div class="path" style="left:20%;top:28%;width:250px;transform:rotate(10deg);"></div>
+                <div class="path" style="left:30%;top:62%;width:230px;transform:rotate(-18deg);"></div>
+                <div class="path" style="left:44%;top:72%;width:220px;transform:rotate(-6deg);"></div>
+                <div class="path" style="left:54%;top:40%;width:210px;transform:rotate(22deg);"></div>
+              </div>
+              <div class="dropzones-grid" id="routeTargets" style="margin-top:16px;"></div>
+            </div>
+          </div>
+
+          <div class="footer-actions">
+            <button class="btn btn-primary" id="toQuizBtn" disabled>Перейти к викторине</button>
+          </div>
+        </section>
+
+        <section class="stage hidden" id="stage-3">
+          <div class="stage-head">
+            <div>
+              <p class="eyebrow">Этап 4</p>
+              <h3>Финальная викторина</h3>
+              <p>Последний рывок. После каждого ответа ты получишь небольшой исторический комментарий.</p>
+            </div>
+            <div class="stage-meta">
+              <span class="tag" id="quizCounterTag">Вопрос 1 из 6</span>
+              <span class="tag">Максимум: 400 очков</span>
+            </div>
+          </div>
+
+          <div class="question-card">
+            <div class="quiz-progress"><span id="quizProgressBar"></span></div>
+            <div class="eyebrow" id="quizCategory">Категория</div>
+            <div class="question-text" id="quizQuestion">Здесь появится вопрос.</div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="fact-note" id="quizFact"></div>
+            <div class="footer-actions">
+              <button class="btn btn-primary" id="nextQuestionBtn" disabled>Следующий вопрос</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="stage hidden" id="stage-4">
+          <div class="stage-head">
+            <div>
+              <p class="eyebrow">Этап 5</p>
+              <h3>Итог экспедиции</h3>
+              <p>Экспедиция завершена. Смотри финальный результат и используй страницу как готовый школьный онлайн-проект.</p>
+            </div>
+            <div class="stage-meta">
+              <span class="tag" id="rankTag">Ранг: исследователь</span>
+            </div>
+          </div>
+
+          <div class="result-card">
+            <h3 style="margin-top:0;" id="resultTitle">Результат</h3>
+            <p id="resultText">Твой итог появится здесь после прохождения всех этапов.</p>
+            <div class="result-grid">
+              <div class="result-stat">
+                <strong id="finalScore">0</strong>
+                Общие очки
+              </div>
+              <div class="result-stat">
+                <strong id="finalCorrect">0</strong>
+                Верных действий
+              </div>
+              <div class="result-stat">
+                <strong id="finalAccuracy">0%</strong>
+                Точность
+              </div>
+            </div>
+            <div class="facts-grid">
+              <div class="log-item">Эпоха Великих географических открытий изменила представления людей о размерах и устройстве мира.</div>
+              <div class="log-item">Морские пути влияли не только на карты, но и на торговлю, науку, политику и культуру.</div>
+            </div>
+            <div class="footer-actions">
+              <button class="btn btn-primary" id="restartBtnBottom">Пройти ещё раз</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+<script>
+  const timelineData = [
+    {
+      id: "dias",
+      title: "Бартоломеу Диаш",
+      year: 1488,
+      description: "Обогнул южную оконечность Африки и вышел к Индийскому океану."
+    },
+    {
+      id: "columbus",
+      title: "Христофор Колумб",
+      year: 1492,
+      description: "Достиг островов Америки, открыв для европейцев новый маршрут через Атлантику."
+    },
+    {
+      id: "gama",
+      title: "Васко да Гама",
+      year: 1498,
+      description: "Открыл морской путь из Европы в Индию вокруг Африки."
+    },
+    {
+      id: "cabot",
+      title: "Джон Кабот",
+      year: 1497,
+      description: "Исследовал берега Северной Америки под английским флагом."
+    },
+    {
+      id: "magellan",
+      title: "Фернан Магеллан",
+      year: 1519,
+      description: "Начал экспедицию, которая стала первым кругосветным плаванием."
+    }
+  ];
+
+  const routeData = [
+    {
+      id: "columbus",
+      title: "Христофор Колумб",
+      description: "Поиск западного пути в Индию через Атлантический океан.",
+      target: "america"
+    },
+    {
+      id: "gama",
+      title: "Васко да Гама",
+      description: "Маршрут вокруг Африки к берегам Индии.",
+      target: "india"
+    },
+    {
+      id: "magellan",
+      title: "Фернан Магеллан",
+      description: "Переход через пролив к Тихому океану и кругосветная экспедиция.",
+      target: "pacific"
+    },
+    {
+      id: "bering",
+      title: "Витус Беринг",
+      description: "Исследование пролива между Азией и Северной Америкой.",
+      target: "bering"
+    }
+  ];
+
+  const routeTargets = [
+    {
+      id: "america",
+      title: "Выход к Америке",
+      description: "Маршрут через Атлантику к Карибским островам."
+    },
+    {
+      id: "india",
+      title: "Путь в Индию",
+      description: "Обход Африки и плавание к берегам Индии."
+    },
+    {
+      id: "pacific",
+      title: "Тихий океан",
+      description: "Переход через пролив Магеллана и новый океан."
+    },
+    {
+      id: "bering",
+      title: "Берингов пролив",
+      description: "Рубеж между Азией и Северной Америкой."
+    }
+  ];
+
+  const quizData = [
+    {
+      category: "Мореплаватели",
+      question: "Кто организовал первое в истории кругосветное плавание?",
+      answers: ["Христофор Колумб", "Фернан Магеллан", "Америго Веспуччи", "Джеймс Кук"],
+      correct: 1,
+      fact: "Экспедиция Магеллана началась в 1519 году, а завершил её после гибели капитана Хуан Себастьян Элькано."
+    },
+    {
+      category: "Открытия",
+      question: "В каком году Колумб впервые достиг берегов Америки?",
+      answers: ["1488", "1492", "1498", "1507"],
+      correct: 1,
+      fact: "12 октября 1492 года считается одной из ключевых дат эпохи Великих географических открытий."
+    },
+    {
+      category: "Картография",
+      question: "В честь кого континент Америка получил своё название?",
+      answers: ["Васко да Гамы", "Фернана Магеллана", "Америго Веспуччи", "Джона Кабота"],
+      correct: 2,
+      fact: "Картограф Мартин Вальдземюллер предложил название America в 1507 году."
+    },
+    {
+      category: "Маршруты",
+      question: "Какой путь открыл Васко да Гама?",
+      answers: ["Морской путь в Индию", "Северо-Западный проход", "Путь в Австралию", "Путь к Антарктиде"],
+      correct: 0,
+      fact: "Плавание Васко да Гамы помогло Португалии укрепить торговые связи с Востоком."
+    },
+    {
+      category: "Приборы",
+      question: "Какой прибор помогал мореплавателям определять широту?",
+      answers: ["Барометр", "Астролябия", "Термометр", "Микроскоп"],
+      correct: 1,
+      fact: "Морская астролябия использовалась для измерения высоты светил над горизонтом."
+    },
+    {
+      category: "География",
+      question: "Какой пролив разделяет Азию и Северную Америку?",
+      answers: ["Гибралтарский", "Магелланов", "Берингов", "Дрейка"],
+      correct: 2,
+      fact: "Берингов пролив назван в честь Витуса Беринга, который исследовал этот регион в XVIII веке."
+    }
+  ];
+
+  const state = {
+    stage: 0,
+    score: 0,
+    correct: 0,
+    totalActions: timelineData.length + routeData.length + quizData.length,
+    timelineSelected: null,
+    routeSelected: null,
+    timelineProgress: 0,
+    routeProgress: 0,
+    timelineOrder: [],
+    quizIndex: 0,
+    quizAnswered: false,
+    shuffledTimeline: [],
+    shuffledRoutes: []
+  };
+
+  const stageTitles = [
+    "Подготовка",
+    "Лента времени",
+    "Карта маршрутов",
+    "Викторина",
+    "Результат"
+  ];
+
+  function shuffle(array) {
+    const clone = [...array];
+    for (let i = clone.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [clone[i], clone[j]] = [clone[j], clone[i]];
+    }
+    return clone;
+  }
+
+  function cloneTimelineData() {
+    return timelineData.map((item) => ({ ...item }));
+  }
+
+  function cloneRouteData() {
+    return routeData.map((item) => ({ ...item }));
+  }
+
+  function updateHeader() {
+    document.getElementById("stageLabel").textContent = stageTitles[state.stage];
+    document.getElementById("scoreValue").textContent = state.score;
+    document.getElementById("correctValue").textContent = state.correct;
+  }
+
+  function updateStageChips() {
+    for (let i = 0; i <= 4; i += 1) {
+      const chip = document.getElementById(`chip-${i}`);
+      chip.classList.remove("active", "done");
+      if (i < state.stage) {
+        chip.classList.add("done");
+      } else if (i === state.stage) {
+        chip.classList.add("active");
+      }
+    }
+  }
+
+  function showStage(index) {
+    state.stage = index;
+    document.querySelectorAll(".stage").forEach((section, sectionIndex) => {
+      section.classList.toggle("hidden", sectionIndex !== index);
+    });
+    updateHeader();
+    updateStageChips();
+  }
+
+  function setFeedback(id, text, type) {
+    const node = document.getElementById(id);
+    node.textContent = text;
+    node.className = `feedback ${type || ""}`.trim();
+  }
+
+  function resetGame() {
+    state.stage = 0;
+    state.score = 0;
+    state.correct = 0;
+    state.timelineSelected = null;
+    state.routeSelected = null;
+    state.timelineProgress = 0;
+    state.routeProgress = 0;
+    state.timelineOrder = cloneTimelineData().sort((a, b) => a.year - b.year);
+    state.quizIndex = 0;
+    state.quizAnswered = false;
+    state.shuffledTimeline = shuffle(cloneTimelineData());
+    state.shuffledRoutes = shuffle(cloneRouteData());
+
+    document.getElementById("timelineSelectedLabel").textContent = "Выбранная карточка: нет";
+    document.getElementById("toRoutesBtn").disabled = true;
+    document.getElementById("toQuizBtn").disabled = true;
+    document.getElementById("nextQuestionBtn").disabled = true;
+    document.getElementById("quizFact").classList.remove("show");
+    document.getElementById("quizFact").textContent = "";
+    setFeedback("timelineFeedback", "", "");
+    setFeedback("routesFeedback", "", "");
+
+    renderTimeline();
+    renderRoutes();
+    renderQuiz();
+    showStage(0);
+  }
+
+  function renderTimeline() {
+    const cardsBox = document.getElementById("timelineCards");
+    const slotsBox = document.getElementById("timelineSlots");
+    cardsBox.innerHTML = "";
+    slotsBox.innerHTML = "";
+
+    state.shuffledTimeline.forEach((item) => {
+      const card = document.createElement("button");
+      card.className = "timeline-card";
+      card.disabled = item.used === true;
+      card.innerHTML = `
+        <div class="card-year">Год скрыт</div>
+        <h4>${item.title}</h4>
+        <div>${item.description}</div>
+      `;
+      if (state.timelineSelected && state.timelineSelected.id === item.id) {
+        card.classList.add("selected");
+      }
+      if (item.used) {
+        card.classList.add("used");
+      }
+      card.addEventListener("click", () => {
+        state.timelineSelected = item;
+        document.getElementById("timelineSelectedLabel").textContent = `Выбранная карточка: ${item.title}`;
+        renderTimeline();
+      });
+      cardsBox.appendChild(card);
+    });
+
+    state.timelineOrder.forEach((item, index) => {
+      const slot = document.createElement("button");
+      slot.className = "drop-slot";
+      slot.innerHTML = `
+        <div class="card-year">Позиция ${index + 1}</div>
+        <h4>${index + 1}. событие</h4>
+        <div>Нажми сюда после выбора карточки слева.</div>
+      `;
+
+      if (item.placed) {
+        slot.classList.add(item.placedCorrect ? "correct" : "wrong");
+        slot.innerHTML = `
+          <div class="card-year">${item.year}</div>
+          <h4>${index + 1}. ${item.title}</h4>
+          <div>${item.description}</div>
+          <div class="placed-answer">${item.placedCorrect ? "Верно" : "Было открыто автоматически после ошибки"}</div>
+        `;
+        slot.disabled = true;
+      } else {
+        slot.addEventListener("click", () => handleTimelineSlot(index));
+      }
+      slotsBox.appendChild(slot);
+    });
+  }
+
+  function handleTimelineSlot(index) {
+    const expected = state.timelineOrder[index];
+    if (!state.timelineSelected || expected.placed) {
+      setFeedback("timelineFeedback", "Сначала выбери карточку слева.", "bad");
+      return;
+    }
+
+      const chosen = state.timelineSelected;
+
+    if (chosen.id === expected.id) {
+        expected.placed = true;
+        expected.placedCorrect = true;
+        const matchedTimeline = state.shuffledTimeline.find((item) => item.id === chosen.id);
+        matchedTimeline.used = true;
+      state.score += 60;
+      state.correct += 1;
+      state.timelineProgress += 1;
+      state.timelineSelected = null;
+      document.getElementById("timelineSelectedLabel").textContent = "Выбранная карточка: нет";
+      setFeedback("timelineFeedback", `Верно: ${expected.title} относится к ${expected.year} году.`, "good");
+      } else {
+        expected.placed = true;
+        expected.placedCorrect = false;
+        const realCard = state.shuffledTimeline.find((item) => item.id === expected.id);
+        realCard.used = true;
+        state.score = Math.max(0, state.score - 10);
+        state.timelineProgress += 1;
+        state.timelineSelected = null;
+        document.getElementById("timelineSelectedLabel").textContent = "Выбранная карточка: нет";
+        setFeedback("timelineFeedback", `Немного мимо. В эту позицию должно было попасть событие "${expected.title}" (${expected.year}).`, "bad");
+    }
+
+    renderTimeline();
+    updateHeader();
+
+    if (state.timelineProgress === state.timelineOrder.length) {
+      document.getElementById("toRoutesBtn").disabled = false;
+      if (state.timelineOrder.filter((item) => item.placedCorrect).length >= 4) {
+        state.score += 40;
+      }
+      updateHeader();
+    }
+  }
+
+  function renderRoutes() {
+    const cardsBox = document.getElementById("routeCards");
+    const targetsBox = document.getElementById("routeTargets");
+    cardsBox.innerHTML = "";
+    targetsBox.innerHTML = "";
+
+    state.shuffledRoutes.forEach((item) => {
+      const card = document.createElement("button");
+      card.className = "route-card";
+      card.disabled = item.used === true;
+      card.innerHTML = `
+        <h4>${item.title}</h4>
+        <div>${item.description}</div>
+      `;
+      if (state.routeSelected && state.routeSelected.id === item.id) {
+        card.classList.add("selected");
+      }
+      if (item.used) {
+        card.classList.add("used");
+      }
+      card.addEventListener("click", () => {
+        state.routeSelected = item;
+        renderRoutes();
+      });
+      cardsBox.appendChild(card);
+    });
+
+    routeTargets.forEach((target) => {
+      const routeItem = state.shuffledRoutes.find((item) => item.target === target.id);
+      const block = document.createElement("button");
+      block.className = "destination";
+
+      if (routeItem && routeItem.placed) {
+        block.classList.add(routeItem.placedCorrect ? "correct" : "wrong");
+        block.disabled = true;
+        block.innerHTML = `
+          <h4>${target.title}</h4>
+          <div>${target.description}</div>
+          <div class="placed-answer">${routeItem.title}</div>
+        `;
+      } else {
+        block.innerHTML = `
+          <h4>${target.title}</h4>
+          <div>${target.description}</div>
+        `;
+        block.addEventListener("click", () => handleRouteTarget(target.id));
+      }
+      targetsBox.appendChild(block);
+    });
+  }
+
+  function handleRouteTarget(targetId) {
+    if (!state.routeSelected) {
+      setFeedback("routesFeedback", "Сначала выбери мореплавателя слева.", "bad");
+      return;
+    }
+
+    const selected = state.routeSelected;
+    const liveCard = state.shuffledRoutes.find((item) => item.id === selected.id);
+    liveCard.used = true;
+    liveCard.placed = true;
+    liveCard.placedCorrect = selected.target === targetId;
+
+    if (liveCard.placedCorrect) {
+      state.score += 70;
+      state.correct += 1;
+      setFeedback("routesFeedback", `Верно: ${selected.title} действительно связан с этим маршрутом.`, "good");
+    } else {
+      state.score = Math.max(0, state.score - 10);
+      setFeedback("routesFeedback", `Не совсем. ${selected.title} связан с другим маршрутом.`, "bad");
+    }
+
+    state.routeProgress += 1;
+    state.routeSelected = null;
+    renderRoutes();
+    updateHeader();
+
+    if (state.routeProgress === routeData.length) {
+      document.getElementById("toQuizBtn").disabled = false;
+      if (state.shuffledRoutes.filter((item) => item.placedCorrect).length === routeData.length) {
+        state.score += 20;
+        updateHeader();
+      }
+    }
+  }
+
+  function renderQuiz() {
+    const question = quizData[state.quizIndex];
+    const optionsBox = document.getElementById("quizOptions");
+    const progress = ((state.quizIndex) / quizData.length) * 100;
+
+    document.getElementById("quizCounterTag").textContent = `Вопрос ${state.quizIndex + 1} из ${quizData.length}`;
+    document.getElementById("quizProgressBar").style.width = `${progress}%`;
+    document.getElementById("quizCategory").textContent = question.category;
+    document.getElementById("quizQuestion").textContent = question.question;
+    document.getElementById("nextQuestionBtn").disabled = true;
+    document.getElementById("quizFact").classList.remove("show");
+    document.getElementById("quizFact").textContent = "";
+    optionsBox.innerHTML = "";
+    state.quizAnswered = false;
+
+    question.answers.forEach((answer, index) => {
+      const option = document.createElement("button");
+      option.className = "option";
+      option.textContent = answer;
+      option.addEventListener("click", () => handleQuizAnswer(index));
+      optionsBox.appendChild(option);
+    });
+  }
+
+  function handleQuizAnswer(index) {
+    if (state.quizAnswered) {
+      return;
+    }
+
+    state.quizAnswered = true;
+    const question = quizData[state.quizIndex];
+    const options = [...document.querySelectorAll(".option")];
+
+    options.forEach((option, optionIndex) => {
+      option.disabled = true;
+      if (optionIndex === question.correct) {
+        option.classList.add("correct");
+      }
+      if (optionIndex === index && optionIndex !== question.correct) {
+        option.classList.add("wrong");
+      }
+    });
+
+    if (index === question.correct) {
+      state.score += 65;
+      state.correct += 1;
+    } else {
+      state.score = Math.max(0, state.score - 5);
+    }
+
+    updateHeader();
+    document.getElementById("quizFact").textContent = question.fact;
+    document.getElementById("quizFact").classList.add("show");
+    document.getElementById("nextQuestionBtn").disabled = false;
+    document.getElementById("quizProgressBar").style.width = `${((state.quizIndex + 1) / quizData.length) * 100}%`;
+  }
+
+  function nextQuestion() {
+    if (state.quizIndex < quizData.length - 1) {
+      state.quizIndex += 1;
+      renderQuiz();
+    } else {
+      buildResult();
+      showStage(4);
+    }
+  }
+
+  function buildResult() {
+    const accuracy = Math.round((state.correct / state.totalActions) * 100);
+    let title = "Юный исследователь";
+    let text = "Ты хорошо разобрался в теме и уверенно прошёл маршрут по эпохе географических открытий.";
+    let rank = "Ранг: штурман";
+
+    if (accuracy >= 85) {
+      title = "Великий навигатор";
+      text = "Отличный результат. Ты уверенно ориентируешься в ключевых экспедициях, маршрутах и исторических фактах эпохи открытий.";
+      rank = "Ранг: великий навигатор";
+    } else if (accuracy >= 65) {
+      title = "Опытный капитан";
+      text = "Очень достойно. Основные открытия и маршруты ты знаешь хорошо, а значит проект точно произведёт хорошее впечатление.";
+      rank = "Ранг: опытный капитан";
+    }
+
+    document.getElementById("resultTitle").textContent = title;
+    document.getElementById("resultText").textContent = text;
+    document.getElementById("finalScore").textContent = state.score;
+    document.getElementById("finalCorrect").textContent = state.correct;
+    document.getElementById("finalAccuracy").textContent = `${accuracy}%`;
+    document.getElementById("rankTag").textContent = rank;
+  }
+
+  document.getElementById("startBtn").addEventListener("click", () => showStage(1));
+  document.getElementById("toTimelineBtn").addEventListener("click", () => showStage(1));
+  document.getElementById("toRoutesBtn").addEventListener("click", () => showStage(2));
+  document.getElementById("toQuizBtn").addEventListener("click", () => showStage(3));
+  document.getElementById("nextQuestionBtn").addEventListener("click", nextQuestion);
+  document.getElementById("shuffleTimelineBtn").addEventListener("click", () => {
+    state.shuffledTimeline = shuffle(state.shuffledTimeline.filter((item) => !item.used).concat(state.shuffledTimeline.filter((item) => item.used)));
+    renderTimeline();
+  });
+  document.getElementById("restartBtnTop").addEventListener("click", resetGame);
+  document.getElementById("restartBtnBottom").addEventListener("click", resetGame);
+
+  resetGame();
+</script>
+</body>
+</html>
